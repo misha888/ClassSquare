@@ -1,63 +1,119 @@
-###############################################################################
-# Set default behavior to automatically normalize line endings.
-###############################################################################
-* text=auto
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-###############################################################################
-# Set default behavior for command prompt diff.
-#
-# This is need for earlier builds of msysgit that does not have it on by
-# default for csharp files.
-# Note: This is only used by command line
-###############################################################################
-#*.cs     diff=csharp
 
-###############################################################################
-# Set the merge driver for project and solution files
-#
-# Merging from the command prompt will add diff markers to the files if there
-# are conflicts (Merging from VS is not affected by the settings below, in VS
-# the diff markers are never inserted). Diff markers may cause the following 
-# file extensions to fail to load in VS. An alternative would be to treat
-# these files as binary and thus will always conflict and require user
-# intervention with every merge. To do so, just uncomment the entries below
-###############################################################################
-#*.sln       merge=binary
-#*.csproj    merge=binary
-#*.vbproj    merge=binary
-#*.vcxproj   merge=binary
-#*.vcproj    merge=binary
-#*.dbproj    merge=binary
-#*.fsproj    merge=binary
-#*.lsproj    merge=binary
-#*.wixproj   merge=binary
-#*.modelproj merge=binary
-#*.sqlproj   merge=binary
-#*.wwaproj   merge=binary
+class Kvadrat
+{
+    protected int storona;
 
-###############################################################################
-# behavior for image files
-#
-# image files are treated as binary by default.
-###############################################################################
-#*.jpg   binary
-#*.png   binary
-#*.gif   binary
+    public Kvadrat()
+    {
+        storona = 0;
+    }
 
-###############################################################################
-# diff behavior for common document formats
-# 
-# Convert binary document formats to text before diffing them. This feature
-# is only available from the command line. Turn it on by uncommenting the 
-# entries below.
-###############################################################################
-#*.doc   diff=astextplain
-#*.DOC   diff=astextplain
-#*.docx  diff=astextplain
-#*.DOCX  diff=astextplain
-#*.dot   diff=astextplain
-#*.DOT   diff=astextplain
-#*.pdf   diff=astextplain
-#*.PDF   diff=astextplain
-#*.rtf   diff=astextplain
-#*.RTF   diff=astextplain
+    public Kvadrat(int st)
+    {
+        storona = st;
+    }
+
+    public int Storona
+    {
+        get { return storona; }
+        set { storona = value; }
+    }
+
+    public virtual string Info()
+    {
+        return string.Format("Kvadrat");
+    }
+
+    public virtual int Area()
+    {
+        return storona * storona;
+    }
+
+    public virtual int Perimeter()
+    {
+        return 4 * storona;
+    }
+
+    public virtual double Diagonal()
+    {
+        return Math.Sqrt(2 * storona * storona);
+    }
+};
+
+class Prizma : Kvadrat
+{
+    protected int visota;
+    public Prizma()
+        : base()
+    {
+        visota = 0;
+    }
+
+    public Prizma(int st, int vst)
+        : base(st)
+    {
+        visota = vst;
+    }
+    public int Visota
+    {
+        get { return visota; }
+        set { visota = value; }
+    }
+
+    public override string Info()
+    {
+        return string.Format("Prizma");
+    }
+
+    public override int Area()
+    {
+        return base.Area() * 2 + visota * storona * 4;
+    }
+    public override int Perimeter()
+    {
+        return base.Perimeter() * 2 + visota * 4;
+    }
+    public override double Diagonal()
+    {
+        return Math.Sqrt(base.Diagonal() * base.Diagonal() + visota * visota);
+    }
+    public double Objom()
+    {
+        return storona * storona * visota;
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        int storona;
+        Console.WriteLine("Введите длину стороны :");
+        storona = Convert.ToInt32(Console.ReadLine());
+        Kvadrat kv1 = new Kvadrat(storona);
+
+        Console.WriteLine(kv1.Info());
+        Console.WriteLine("Area {0}", kv1.Area());
+        Console.WriteLine("Perimeter {0}", kv1.Perimeter());
+        Console.WriteLine("Diagonal {0}", kv1.Diagonal());
+        Console.WriteLine();
+
+        int visota;
+        Console.WriteLine("Введите длину высоты :");
+        visota = Convert.ToInt32(Console.ReadLine());
+
+        Prizma pr1 = new Prizma(storona, visota);
+        Console.WriteLine(pr1.Info());
+        Console.WriteLine("Area {0}", pr1.Area());
+        Console.WriteLine("Perimeter {0}", pr1.Perimeter());
+        Console.WriteLine("Diagonal {0}", pr1.Diagonal());
+        Console.WriteLine("Objom {0}", pr1.Objom());
+
+        Console.ReadKey();
+    }
+}
